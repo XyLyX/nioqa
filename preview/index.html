@@ -3,28 +3,60 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>NIOQA · Private signup test</title>
+  <meta name="robots" content="noindex, nofollow">
+  <title>NIOQA · I’m here. Anyone around?</title>
   <link rel="stylesheet" href="/signup.css">
   <script defer src="/supabase.js"></script>
   <script type="module" src="/signup.js"></script>
 </head>
 <body>
-  <main>
-    <p class="eyebrow">NIOQA / PRIVATE PREVIEW</p>
-    <h1>Meet somewhere public.</h1>
-    <p class="intro">Sign in to test the first step toward hosting or joining a NIOQA meetup.</p>
-    <section aria-label="Account setup">
-      <button id="google" hidden>Continue with Google</button>
-      <form id="onboarding" hidden>
-        <label for="display-name">Display name</label>
-        <input id="display-name" required minlength="2" maxlength="80" autocomplete="nickname">
-        <label class="check"><input id="adult" type="checkbox" required> I confirm I am 18 or older.</label>
-        <p class="note">NIOQA uses self-declared age. Follow the venue’s rules. Venue staff have final discretion over entry and service, including age and ID checks.</p>
-        <button type="submit">Finish setup</button>
-      </form>
-      <p id="status" role="status">Checking sign-in…</p>
-      <button id="logout" class="secondary" hidden>Sign out</button>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="shell header">
+    <a class="wordmark" href="/" aria-label="NIOQA home">nioqa</a>
+    <span class="label">PRIVATE PREVIEW</span>
+    <a href="#account">Sign in</a>
+  </header>
+  <main class="shell" id="main">
+    <div class="hero">
+      <div>
+        <p class="label">GOOD COMPANY, IN THE MOMENT</p>
+        <h1>I’m here.<br>Anyone around?</h1>
+        <p class="intro">Post a Ping at a public venue and see who’s free to join.</p>
+        <a class="primary" href="#account">Get started</a>
+        <p class="note">Public venues only. Each Ping lasts one hour from its start.</p>
+      </div>
+      <figure class="example">
+        <figcaption class="label">EXAMPLE PING</figcaption>
+        <div class="example-head"><strong>The Coffee House</strong><span class="countdown">56 min left</span></div>
+        <blockquote>“Having coffee. Anyone around?”</blockquote>
+        <div class="example-footer"><span>Public venue</span><span>Host approval</span></div>
+      </figure>
+    </div>
+    <section class="how" aria-labelledby="how-heading">
+      <h2 id="how-heading">How it works</h2>
+      <ol>
+        <li><span>01</span><h3>Post a Ping</h3><p>Pick an approved public venue and share what you’re doing.</p></li>
+        <li><span>02</span><h3>Find a Ping</h3><p>See what’s available and request to join one that suits you.</p></li>
+        <li><span>03</span><h3>Meet up</h3><p>Once the host approves, use temporary chat to coordinate.</p></li>
+      </ol>
+    </section>
+    <section id="account" class="account" aria-labelledby="account-heading">
+      <div><p class="label">PRIVATE SIGNUP TEST</p><h2 id="account-heading">Say hello.</h2>
+        <p class="note">Sign in and set up your NIOQA profile. This preview tests account setup.</p></div>
+      <div>
+        <button id="google" hidden>Continue with Google</button>
+        <form id="onboarding" hidden>
+          <label for="display-name">Display name</label>
+          <input id="display-name" required minlength="2" maxlength="80" autocomplete="nickname">
+          <label class="check"><input id="adult" type="checkbox" required> I confirm I am 18 or older.</label>
+          <p class="note">NIOQA relies on self-declared age. Follow the venue’s rules. Venue staff have final discretion over entry and service, including age and ID checks.</p>
+          <button type="submit">Finish setup</button>
+        </form>
+        <p id="status" role="status">Checking sign-in…</p>
+        <button id="logout" class="secondary" hidden>Sign out</button>
+      </div>
     </section>
   </main>
+  <footer class="shell footer"><span class="wordmark">nioqa</span><a href="mailto:hello@nioqa.app">hello@nioqa.app</a></footer>
 </body>
 </html>
