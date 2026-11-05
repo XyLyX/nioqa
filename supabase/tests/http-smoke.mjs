@@ -33,8 +33,12 @@ try {
   assert.equal(profile.status, 200, "Signed-in user must be able to create a profile");
   assert.deepEqual(await profile.json(), { user_id: user.id });
   const gated = await post(rpc, { action: "venues" }, token);
-  assert.equal(gated.status, 403, "Unassured account must be denied");
+  assert.equal(gated.status, 403, "Account without an age declaration must be denied");
   assert.equal((await gated.json()).code, "42501");
+  const declaration = await post(rpc, { action: "declare_adult", body: "I confirm I am 18 or older" }, token);
+  assert.equal(declaration.status, 200);
+  assert.deepEqual(await declaration.json(), { adult_declared: true });
+  assert.equal((await post(rpc, { action: "venues" }, token)).status, 200);
 } finally {
   const logout = await post("/auth/v1/logout", {}, token);
   assert.equal(logout.status, 204, "Test session must be revoked");

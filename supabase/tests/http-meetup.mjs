@@ -34,6 +34,10 @@ async function signIn(email) {
 try {
   const host = await signIn(NIOQA_HOST_EMAIL);
   const guest = await signIn(NIOQA_GUEST_EMAIL);
+  for (const [token, name] of [[host, "Disposable host"], [guest, "Disposable guest"]]) {
+    await rpc(token, { action: "profile", body: name });
+    await rpc(token, { action: "declare_adult", body: "I confirm I am 18 or older" });
+  }
   assert.ok((await rpc(host, { action: "venues" })).some(venue => venue.id === NIOQA_TEST_VENUE));
   const { id: ping } = await rpc(host, {
     action: "create", target: NIOQA_TEST_VENUE, body: "NIOQA HTTP test",

@@ -18,9 +18,6 @@ begin
   insert into auth.users (id) values (host), (guest), (stranger);
   insert into auth.sessions (id, user_id)
     values (host_session, host), (guest_session, guest), (stranger_session, stranger);
-  insert into public.profiles (user_id, display_name, verification_status, adult_verified_until, identity_verified_until)
-    values (host, 'Host', 'verified', now() + interval '1 day', now() + interval '1 day'),
-           (guest, 'Guest', 'verified', now() + interval '1 day', now() + interval '1 day');
   insert into public.venues (id, provider, provider_place_id, name, latitude, longitude, public_verified)
     values (venue, 'test', venue::text, 'Public venue', 0, 0, true),
            (private_venue, 'test', private_venue::text, 'Unverified venue', 0, 0, false);
@@ -39,12 +36,12 @@ begin
   perform public.nioqa_operation('profile', body => 'Stranger');
   begin
     perform public.nioqa_operation('create', venue, 'Meet at the venue', now());
-    raise exception 'Unassured account could create Ping';
+    raise exception 'Account without age declaration could create Ping';
   exception when insufficient_privilege then null;
   end;
   begin
-    update public.profiles set adult_verified_until = now() + interval '1 day';
-    raise exception 'Client could write assurance';
+    update public.profiles set adult_declared_at = now() + interval '1 day';
+    raise exception 'Client could write age declaration directly';
   exception when insufficient_privilege then null;
   end;
   begin
@@ -53,7 +50,17 @@ begin
   exception when insufficient_privilege then null;
   end;
 
+  perform set_config('request.jwt.claims', guest_claims, true);
+  perform public.nioqa_operation('profile', body => 'Guest');
+  perform public.nioqa_operation('declare_adult', body => 'I confirm I am 18 or older');
   perform set_config('request.jwt.claims', host_claims, true);
+  perform public.nioqa_operation('profile', body => 'Host');
+  begin
+    perform public.nioqa_operation('declare_adult');
+    raise exception 'Missing declaration was accepted';
+  exception when invalid_parameter_value then null;
+  end;
+  perform public.nioqa_operation('declare_adult', body => 'I confirm I am 18 or older');
   begin
     perform public.nioqa_operation('create', private_venue, 'Meet at the venue', now());
     raise exception 'Unverified venue was accepted';
