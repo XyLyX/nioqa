@@ -14,7 +14,7 @@
   <header class="shell header">
     <a class="wordmark" href="/" aria-label="NIOQA home">nioqa</a>
     <span class="label">PRIVATE PREVIEW</span>
-    <a href="#account">Sign in</a>
+    <a id="account-link" href="#account" hidden>Sign in</a>
   </header>
   <main class="shell" id="main">
     <div class="hero">
@@ -22,7 +22,7 @@
         <p class="label">GOOD COMPANY, IN THE MOMENT</p>
         <h1>I’m here.<br>Anyone around?</h1>
         <p class="intro">Post a Ping at a public venue and see who’s free to join.</p>
-        <a class="primary" href="#account">Get started</a>
+        <a id="account-cta" class="primary" href="#account">Get started</a>
         <p class="note">Public venues only. Each Ping lasts one hour from its start.</p>
       </div>
       <figure class="example">
@@ -42,7 +42,7 @@
     </section>
     <section id="account" class="account" aria-labelledby="account-heading">
       <div><p class="label">PRIVATE SIGNUP TEST</p><h2 id="account-heading">Say hello.</h2>
-        <p class="note">Sign in and set up your NIOQA profile. This preview tests account setup.</p></div>
+        <p id="account-intro" class="note">Sign in and set up your NIOQA profile. This preview tests account setup.</p></div>
       <div>
         <button id="google" hidden>Continue with Google</button>
         <form id="onboarding" hidden>

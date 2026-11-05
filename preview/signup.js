@@ -1,5 +1,8 @@
 import { createSignIn } from "/sign-in.js";
 
+const accountLink = document.querySelector("#account-link");
+const accountCta = document.querySelector("#account-cta");
+const accountIntro = document.querySelector("#account-intro");
 const google = document.querySelector("#google");
 const onboarding = document.querySelector("#onboarding");
 const logout = document.querySelector("#logout");
@@ -14,6 +17,12 @@ async function render() {
   const { data, error } = await supabase.auth.getSession();
   if (error) throw error;
   const signedIn = Boolean(data.session);
+  accountLink.textContent = signedIn ? "My account" : "Sign in";
+  accountLink.hidden = false;
+  accountCta.textContent = signedIn ? "My account" : "Get started";
+  accountIntro.textContent = signedIn
+    ? "Manage your session and complete your profile if needed."
+    : "Sign in and set up your NIOQA profile. This preview tests account setup.";
   google.hidden = signedIn;
   logout.hidden = !signedIn;
   onboarding.hidden = true;
