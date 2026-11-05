@@ -21,3 +21,4 @@ A trusted backend must validate assurance-provider results and associate them wi
 Run `npm test` for domain tests. Run [authorization.sql](../supabase/tests/authorization.sql) as a database administrator against a test Supabase database with both migrations applied. It exercises the actual RPC under anonymous and authenticated database roles and rolls back its fixtures.
 
 Before public deployment, exercise sign-in and the RPC over HTTP using real test accounts, connect and test both verification providers, and confirm moderation, abuse controls and chat retention end to end.
+For the hosted HTTP smoke test, provision a confirmed, unassured disposable password account with a .invalid address. Set the four NIOQA environment variables listed in the script, run `node supabase/tests/http-smoke.mjs`, and delete the disposable account afterward. This checks password sign-in, anonymous denial, profile creation, the assurance gate and session revocation.
