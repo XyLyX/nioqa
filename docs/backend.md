@@ -42,3 +42,7 @@ The repository currently contains backend code. Connect the future signup screen
 1. Create a Google OAuth web client. In Google, register `https://uajcobqgfgjyuzeiqllv.supabase.co/auth/v1/callback` as the authorized redirect URI. Configure the client ID and secret in Supabase Auth. For private testing, restrict the Google app to approved test users and allowlist the exact NIOQA callback URL in Supabase.
 2. Configure a transactional sender through Supabase custom SMTP. Set the **Magic Link** template to show `{{ .Token }}` and configure six-digit email codes. Test with approved recipients before opening signups.
 3. Test first-time and returning sign-in with both methods, an incorrect or expired code, a cancelled Google login, and the age gate. Keep Google permissions limited to basic sign-in. A sign-in email address does not opt the user into marketing.
+
+### Local Google signup preview
+
+In Supabase Authentication → URL Configuration, add the exact redirect URL `http://127.0.0.1:4173/auth/callback`. Keep the Google OAuth client’s redirect pointed at the Supabase callback. Run `npm ci` and `npm run preview`, then open `http://127.0.0.1:4173/` in your regular browser. Use the same browser for the callback, complete the 18+ declaration, and verify that sign-out works. The preview listens only on this computer and shows Google sign-in while email delivery is pending.

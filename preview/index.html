@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NIOQA · Private signup test</title>
+  <link rel="stylesheet" href="/signup.css">
+  <script defer src="/supabase.js"></script>
+  <script type="module" src="/signup.js"></script>
+</head>
+<body>
+  <main>
+    <p class="eyebrow">NIOQA / PRIVATE PREVIEW</p>
+    <h1>Meet somewhere public.</h1>
+    <p class="intro">Sign in to test the first step toward hosting or joining a NIOQA meetup.</p>
+    <section aria-label="Account setup">
+      <button id="google" hidden>Continue with Google</button>
+      <form id="onboarding" hidden>
+        <label for="display-name">Display name</label>
+        <input id="display-name" required minlength="2" maxlength="80" autocomplete="nickname">
+        <label class="check"><input id="adult" type="checkbox" required> I confirm I am 18 or older.</label>
+        <p class="note">NIOQA uses self-declared age. Follow the venue’s rules. Venue staff have final discretion over entry and service, including age and ID checks.</p>
+        <button type="submit">Finish setup</button>
+      </form>
+      <p id="status" role="status">Checking sign-in…</p>
+      <button id="logout" class="secondary" hidden>Sign out</button>
+    </section>
+  </main>
+</body>
+</html>
