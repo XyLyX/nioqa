@@ -28,3 +28,17 @@ Run `npm test` for domain tests. Run [authorization.sql](../supabase/tests/autho
 Before public deployment, exercise sign-in and the RPC over HTTP using real test accounts, confirm venue review, and confirm moderation, abuse controls and chat retention end to end.
 For the hosted HTTP smoke test, provision a confirmed disposable password account with a .invalid address. Set the four NIOQA environment variables listed in the script, run `node supabase/tests/http-smoke.mjs`, and delete the disposable account afterward. This checks password sign-in, anonymous denial, profile creation, the age declaration gate and session revocation.
 For the verified meetup HTTP test, use an isolated Supabase project or an empty prelaunch project. Provision two confirmed disposable password accounts with .invalid addresses, plus one disposable verified venue. Set NIOQA_URL, NIOQA_PUBLISHABLE_KEY, NIOQA_HOST_EMAIL, NIOQA_GUEST_EMAIL, NIOQA_TEST_PASSWORD and NIOQA_TEST_VENUE, then run node supabase/tests/http-meetup.mjs. Remove the test reports, blocks, messages, requests, Pings, accounts and venue afterward.
+
+## Signup integration
+
+The repository currently contains backend code. Connect the future signup screen to `createSignIn(supabase, { googleCallbackUrl })` in `src/auth/sign-in.js`. Use the same Supabase browser client for all steps, with the publishable key and `auth: { flowType: "pkce", detectSessionInUrl: false }` so the callback can exchange the code explicitly.
+
+- **Continue with Google.** Call `startGoogle()`. At the fixed NIOQA callback, read the returned `code`, call `finishGoogle(code)`, then remove the query string from the URL. Show a sign-in error if Google rejects or cancels the request. Use a callback URL from trusted app configuration.
+- **Continue with email.** Call `sendEmailCode(email)`, then `verifyEmailCode(email, code)` with the same email and the six-digit code. Show generic delivery messaging and honor the Supabase resend limit.
+- **First-time onboarding.** After a session exists, collect a display name and an unchecked 18+ confirmation. Call `completeOnboarding` after the user checks it. Returning users can continue with their existing profile and declaration.
+
+### Hosted configuration and acceptance
+
+1. Create a Google OAuth web client. In Google, register `https://uajcobqgfgjyuzeiqllv.supabase.co/auth/v1/callback` as the authorized redirect URI. Configure the client ID and secret in Supabase Auth. For private testing, restrict the Google app to approved test users and allowlist the exact NIOQA callback URL in Supabase.
+2. Configure a transactional sender through Supabase custom SMTP. Set the **Magic Link** template to show `{{ .Token }}` and configure six-digit email codes. Test with approved recipients before opening signups.
+3. Test first-time and returning sign-in with both methods, an incorrect or expired code, a cancelled Google login, and the age gate. Keep Google permissions limited to basic sign-in. A sign-in email address does not opt the user into marketing.
